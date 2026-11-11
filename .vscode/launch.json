@@ -1,0 +1,34 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Robo: tarefas.py (gerar)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/tarefas.py",
+            "args": ["gerar"],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "env": { "PYTHONPATH": "${workspaceFolder}" }
+        },
+        {
+            "name": "Robo: tarefas.py (transmitir)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/tarefas.py",
+            "args": ["transmitir"],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "env": { "PYTHONPATH": "${workspaceFolder}" }
+        },
+        {
+            "name": "Robo: tarefas.py (completo)",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/tarefas.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "env": { "PYTHONPATH": "${workspaceFolder}" }
+        }
+    ]
+}

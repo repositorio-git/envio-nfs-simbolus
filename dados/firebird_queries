@@ -1,0 +1,145 @@
+
+SELECT CURRENT_TIMESTAMP+2 FROM RDB$DATABASE
+;
+select lote_codigo --current_timestamp, n.*--max(lote_codigo)
+from NFSE_LOTE n
+ where lote_data > current_timestamp - 9
+
+;
+
+select rps_competencia, rps_numero_nfse, lote_codigo, n.*--count(*) 
+from NFSE_RPS n 
+where 1=1 and rps_competencia > CURRENT_TIMESTAMP - 2
+
+--and lote_codigo in ('55383')
+;
+ SELECT rps.lote_codigo, COUNT(*) AS qt_notas
+              FROM NFSE_RPS rps
+              JOIN NFSE_LOTE lot ON lot.lote_codigo = rps.lote_codigo
+             WHERE lot.lote_data > CURRENT_TIMESTAMP - 4
+               AND lot.lote_protocolo IS NULL
+               and lot.lote_codigo not in ('55574')
+             GROUP BY rps.lote_codigo
+;
+SELECT rps.*
+  FROM NFSE_RPS rps
+  JOIN NFSE_LOTE lot ON lot.lote_codigo = rps.lote_codigo
+ WHERE lot.lote_codigo in (55322,55323)
+ ;
+ --lot.lote_data > CURRENT_TIMESTAMP - 2
+   --AND lot.lote_protocolo IS NULL
+ --GROUP BY rps.lote_codigo
+;
+
+;
+SELECT rps.lote_codigo, COUNT(*) AS qt_notas_divergentes
+  FROM NFSE_RPS rps
+  JOIN NFSE_LOTE lot ON lot.lote_codigo = rps.lote_codigo
+ WHERE lot.lote_data > CURRENT_TIMESTAMP - 4
+   and lot.lote_protocolo IS NULL
+   AND (EXTRACT(YEAR FROM rps_competencia)  <> EXTRACT(YEAR FROM CURRENT_TIMESTAMP)
+    OR EXTRACT(MONTH FROM rps_competencia) <> EXTRACT(MONTH FROM CURRENT_TIMESTAMP)
+    OR EXTRACT(DAY FROM rps_competencia)   <> EXTRACT(DAY FROM CURRENT_TIMESTAMP))
+ GROUP BY rps.lote_codigo
+ ORDER BY rps.lote_codigo
+
+;
+
+/*
+select 'Select count(*), '''||rdb$relation_name||''' from '||rdb$relation_name||' union all '
+--count(*) 
+from RDB$RELATIONS
+WHERE RDB$SYSTEM_FLAG = 0 AND RDB$RELATION_TYPE = 0
+order by RDB$relation_name
+
+;
+
+Select count(*), 'CONTAS_FUNC                    ' from CONTAS_FUNC                     union 
+Select count(*), 'CONTRATOS_ANEXOS               ' from CONTRATOS_ANEXOS                union 
+Select count(*), 'CONTRATOS_CLASSE               ' from CONTRATOS_CLASSE                union 
+Select count(*), 'CONTRATOS_HISTORICO            ' from CONTRATOS_HISTORICO             union 
+Select count(*), 'CONTRATOS_TESTE                ' from CONTRATOS_TESTE                 union 
+Select count(*), 'CONTRATOS_TIPOC                ' from CONTRATOS_TIPOC                 union 
+Select count(*), 'CONTRATOS_USOS                 ' from CONTRATOS_USOS                  union 
+Select count(*), 'CONTRATOS_VEND                 ' from CONTRATOS_VEND                  union 
+Select count(*), 'CRECEBER_BOLETOS               ' from CRECEBER_BOLETOS                union 
+Select count(*), 'CRECEBER_FECHA                 ' from CRECEBER_FECHA                  union 
+Select count(*), 'CRECEBER_NF                    ' from CRECEBER_NF                     union 
+Select count(*), 'CRECEBER_POSICAO               ' from CRECEBER_POSICAO                union 
+Select count(*), 'CRECEBER_PREVISAO              ' from CRECEBER_PREVISAO               union 
+Select count(*), 'CRECEBER_RENEG                 ' from CRECEBER_RENEG                  union 
+Select count(*), 'CRECEBER_SITE                  ' from CRECEBER_SITE                   union 
+Select count(*), 'CRECEBER_TEMP                  ' from CRECEBER_TEMP                   union 
+Select count(*), 'DEPENDENTES                    ' from DEPENDENTES                     union 
+Select count(*), 'EMISSAO_CARTA                  ' from EMISSAO_CARTA                   union 
+Select count(*), 'JAZ_CONTRATOS                  ' from JAZ_CONTRATOS                   union 
+Select count(*), 'LOGS_FINANCEIRO                ' from LOGS_FINANCEIRO                 union 
+Select count(*), 'NFSE_LOTE                      ' from NFSE_LOTE                       union 
+Select count(*), 'NFSE_RPS                       ' from NFSE_RPS                        union 
+Select count(*), 'PLANOCONTAS_SPED               ' from PLANOCONTAS_SPED                union 
+Select count(*), 'QUADRA_CONFIG                  ' from QUADRA_CONFIG                   union 
+Select count(*), 'SPED_CONFIG                    ' from SPED_CONFIG                     union 
+Select count(*), 'TABELA_VIDA                    ' from TABELA_VIDA                     union 
+Select count(*), 'TESTE                          ' from TESTE                           union 
+Select count(*), 'TESTE2                         ' from TESTE2                          union 
+Select count(*), 'TIPOC_CLASSE                   ' from TIPOC_CLASSE                    union 
+Select count(*), 'TIPOC_COMISSAO                 ' from TIPOC_COMISSAO                  union 
+Select count(*), 'TIPO_CONTRATO                  ' from TIPO_CONTRATO                   union 
+Select count(*), 'TIPO_CONTRATO_RAT              ' from TIPO_CONTRATO_RAT               union 
+Select count(*), 'TIPO_CONT_IDADE                ' from TIPO_CONT_IDADE                 union 
+Select count(*), 'TIPO_SERVICO                   ' from TIPO_SERVICO
+
+*/
+select count(*)--lote_codigo, count(*)
+  --first 60 lote_codigo, rps.* 
+from  NFSE_RPS rps
+--update NFSE_RPS set rps_competencia = '2026-10-19'
+where 1=1 --lote_codigo in (55889, 55905, 55906, 55907, 55908, 55909, 55910, 55911, 55912, 55913, 55914, 55915, 55916, 55917, 55918, 55919, 55920, 55921, 55922, 55923, 55924, 55925, 55926, 55927, 55928, 55929, 55930, 55931, 55932, 55933, 55934, 55935, 55936, 55937, 55938, 55939, 55940, 55941, 55942)
+ and rps_competencia != '2026-10-19'
+ and rps_competencia > CURRENT_TIMESTAMP - 10
+ --and lote_codigo in (55942, 55943, 55944, 55848)
+ and rps_numero_nfse is null
+ group by lote_codigo
+;
+SELECT rps.lote_codigo, COUNT(*) AS qt_notas
+  FROM NFSE_RPS rps
+  JOIN NFSE_LOTE lot ON lot.lote_codigo = rps.lote_codigo
+ where rps.rps_numero_nfse is null
+   and lot.lote_data > CURRENT_TIMESTAMP - 12
+   AND lot.lote_protocolo IS NULL
+ GROUP BY rps.lote_codigo
+            ;
+   SELECT rps.lote_codigo, COUNT(*) AS qt_notas
+              FROM NFSE_RPS rps
+              JOIN NFSE_LOTE lot ON lot.lote_codigo = rps.lote_codigo
+              where 1=1
+               and rps.rps_numero_nfse is null
+               and lot.lote_data > CURRENT_TIMESTAMP - 12
+               AND lot.lote_protocolo IS NULL
+               and rps.rps_competencia > CURRENT_TIMESTAMP - 12
+               and rps.rps_competencia < CURRENT_TIMESTAMP 
+             GROUP BY rps.lote_codigo
+;
+SELECT DISTINCT lote_codigo FROM NFSE_RPS
+ WHERE rps_numero_nfse IS NOT NULL
+   and rps_competencia > CURRENT_TIMESTAMP - 12
+   and rps_competencia < CURRENT_TIMESTAMP 
+;
+
+select * from NFSE_LOTE lot
+where lot.lote_data > CURRENT_TIMESTAMP-1
+;
+(56075, 56076, 55651)
+
+--(56075, 56076, 56077, 56078, 56079, 56080, 56081, 56082, 56083, 56084, 56085, 56086, 56087, 56088, 56089, 56090, 56091, 56092, 56093, 56094, 56095, 56096, 56097, 56098, 56099, 56100, 56101, 56102, 56103, 56104, 56105, 56106, 56107, 56108, 56109, 56110, 56111, 56112, 56113, 56114, 56115, 56116, 56117, 56118, 56119, 56120, 56121, 56122, 56123, 56124, 56125, 56126, 56127, 56128, 56129, 56130, 56131, 56132, 56133, 56134, 56135, 56136, 56137, 56138, 56139, 56140, 56141, 56142, 56143, 56144, 56145, 56146, 56147, 56148, 56149, 56150, 56151, 56152, 56153, 56154, 56155, 56156, 56157, 56158, 56159, 56160, 56161, 56162, 56163, 56164, 56165, 56166)
+;
+
+      SELECT rps.lote_codigo, COUNT(*) AS qt_notas
+  FROM NFSE_RPS rps
+  JOIN NFSE_LOTE lot ON lot.lote_codigo = rps.lote_codigo
+  where rps.rps_numero_nfse is null
+    and lot.lote_data > CURRENT_TIMESTAMP - 4
+    AND lot.lote_protocolo IS NULL
+    and rps.rps_competencia > CURRENT_TIMESTAMP - 4
+    and rps.rps_competencia < CURRENT_TIMESTAMP
+  GROUP BY rps.lote_codigo

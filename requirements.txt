@@ -1,0 +1,7 @@
+pyautogui==0.9.54
+opencv-python>=4.9      # obrigatorio para o confidence do PyAutoGUI e pra _achar_com_transparencia
+pillow>=10.0
+fdb                     # Firebird do Simbolus (INT-02) -- wrapper de fbclient.dll, que e instalacao separada
+
+# Extras opcionais, so se o sistema alvo precisar:
+# pytesseract>=0.3        # OCR -- exige o binario do Tesseract instalado na maquina, isso e so o wrapper Python
